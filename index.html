@@ -36,8 +36,8 @@
 		let currentBullets = [];
 		let invaders = [];
 		let obstacles = [];
-		let xpos = Math.random() * (cols / 2);
-		let	ypos = Math.random() * (rows / 2);
+		let xpos = Math.floor(Math.random() * (cols / 2));
+		let	ypos = Math.floor(Math.random() * (rows / 2));
 		let run = 0;
 		let xoffset = 0;
 		let right = true;
@@ -168,18 +168,36 @@
 
 		function renderInvaders(invader, pos) {
 			run++;
-			if (run >= 25) {
+			if (run >= 5) {
 				run = 0;
 				//xoffset++;
 				xoffset += 5;
 			}
 
-			//TODO Invaders rendern
+
+			/*
+			printInvader(invaders[i], Math.max(cols - invaders[i].length*2, xpos + xoffset), ypos);
+			*/
+
+				/*
 			for (let i = 0; i < invaders.length; i++) {
 				//printInvader(invaders[i], xpos + xoffset, ypos);
-				printInvader(invaders[i], Math.max(cols - invaders[i].length*2, xpos + xoffset), ypos);
-				
+
+				if (xpos + xoffset >= cols - invaders[i].length * 2) {
+					right = false;
+				} else if (xpos + xoffset <= 0) {
+					right = true;
+				}
+
+				if (right) {
+					printInvader(invaders[i], xpos + xoffset, ypos);
+				} else {
+					printInvader(invaders[i], xpos - xoffset, ypos);
+				}
 			}
+			*/
+
+
 		}
 
 

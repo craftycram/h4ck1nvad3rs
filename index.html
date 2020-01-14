@@ -40,6 +40,7 @@
 		let	ypos = Math.floor(Math.random() * (rows / 2));
 		let run = 0;
 		let xoffset = 0;
+		let yoffset = 0;
 		let right = true;
 
 		/*
@@ -168,45 +169,29 @@
 
 		function renderInvaders(invader, pos) {
 			run++;
-			if (run >= 5) {
+			if (run >= 0) {
 				run = 0;
 				//xoffset++;
-				xoffset += 5;
+				if (right) {
+					xoffset += 1;
+				} else {
+					xoffset -= 1;
+				}
 			}
-
-			/*
+			
 			for (let i = 0; i < invaders.length; i++) {
-				//printInvader(invaders[i], xpos + xoffset, ypos);
 				let limit = cols - invaders[i].length*2;
-				let pos = xpos + xoffset;
-				let newPos = Math.max(limit, pos);
-
-				printInvader(invaders[i], newPos, ypos);
-
-			//printInvader(invaders[i], Math.max(cols - invaders[i].length*2, xpos + xoffset), ypos);
-				
-			}
-			*/
-			
-			
-
-			/*
-			for (let i = 0; i < invaders.length; i++) {
-				//printInvader(invaders[i], xpos + xoffset, ypos);
-
-				if (xpos + xoffset >= cols - invaders[i].length * 2) {
+				if (xpos + xoffset >= limit) {
+					// printInvader(invaders[i], Math.min(cols - limit, xpos + xoffset), ypos);
 					right = false;
+					yoffset++;
 				} else if (xpos + xoffset <= 0) {
 					right = true;
+					yoffset++;
 				}
-
-				if (right) {
-					printInvader(invaders[i], xpos + xoffset, ypos);
-				} else {
-					printInvader(invaders[i], xpos - xoffset, ypos);
-				}
+				printInvader(invaders[i], xpos + xoffset, ypos + yoffset);
+				
 			}
-			*/
 			
 
 		}
@@ -307,13 +292,17 @@
 
 					if (invader[x][y] == 1) {
 
-
-
 						renderStr = setCharsAt(renderStr, xyToStringPos(x + xpos, y + ypos), "█");
 						renderStr = setCharsAt(renderStr, xyToStringPos(invader.length * 2 - x - 1 + xpos, y + ypos), "█")
 
+					/*
+					} else {
 
+						renderStr = setCharsAt(renderStr, xyToStringPos(x + xpos, y + ypos), " ");
+						renderStr = setCharsAt(renderStr, xyToStringPos(invader.length * 2 - x - 1 + xpos, y + ypos), " ")
+					*/
 					}
+					
 
 				}
 
@@ -370,5 +359,3 @@
 </body>
 
 </html>
-
-

@@ -13,6 +13,8 @@
 			-webkit-transform: translate(-50%, -50%);
 			transform: translate(-50%, -50%);
 			border: 1px solid gray;
+			color: black;
+			background-color: white;
 		}
 
 		body {
@@ -34,10 +36,12 @@
 		let cnt = 0;
 		let spaceshipPos = Math.round(cols / 2);
 		let currentBullets = [];
+		let currentInvaderBullets = [];
 		let invaders = [];
+		let currentInvaders = [];
 		let obstacles = [];
 		let xpos = Math.floor(Math.random() * (cols / 2));
-		let	ypos = Math.floor(Math.random() * (rows / 2));
+		let ypos = Math.floor(Math.random() * (rows / 2));
 		let run = 0;
 		let xoffset = 0;
 		let yoffset = 0;
@@ -58,12 +62,12 @@
 				y: rows - 10,
 				width: 10,
 				height: 3,
-				char: "G"
+				char: "▓"
 			})
 
-			
-		invaders[0] = generateInvader(5, 5);
-		printInvader(invaders[0], 10, 10);
+
+			invaders[0] = generateInvader(5, 5);
+			printInvader(invaders[0], 10, 10);
 		}
 
 
@@ -169,31 +173,66 @@
 
 		function renderInvaders(invader, pos) {
 			run++;
-			if (run >= 0) {
+			if (run >= 25) {
 				run = 0;
+				console.log("XOffset")
 				//xoffset++;
 				if (right) {
-					xoffset += 1;
+					xoffset += 5;
 				} else {
-					xoffset -= 1;
+					xoffset -= 5;
 				}
-			}
-			
-			for (let i = 0; i < invaders.length; i++) {
-				let limit = cols - invaders[i].length*2;
-				if (xpos + xoffset >= limit) {
-					// printInvader(invaders[i], Math.min(cols - limit, xpos + xoffset), ypos);
-					right = false;
-					yoffset++;
-				} else if (xpos + xoffset <= 0) {
-					right = true;
-					yoffset++;
-				}
-				printInvader(invaders[i], xpos + xoffset, ypos + yoffset);
-				
-			}
-			
 
+				for (let i = 0; i < invaders.length; i++) {
+					let limit = cols - invaders[i].length * 2;
+					if (xpos + xoffset >= limit) {
+						// printInvader(invaders[i], Math.min(cols - limit, xpos + xoffset), ypos);
+						right = false;
+						yoffset++;
+						invaderFireBullet(currentInvaders[i]);
+						console.log("Fire+YOffset")
+					} else if (xpos + xoffset <= 0) {
+						right = true;
+						invaderFireBullet(currentInvaders[i]);
+						yoffset++;
+					}
+				}
+			}
+
+			for (let i = 0; i < invaders.length; i++) {
+				printInvader(invaders[i], xpos + xoffset, ypos + yoffset);
+				currentInvaders[i] = {
+					x: xpos + xoffset,
+					y: ypos + yoffset
+				}
+			}
+
+
+
+		}
+
+		function colissionTesting() {
+
+		}
+
+		function invaderFireBullet(invader) {
+			currentInvaderBullets.push({
+				x: invader['x'] + invaders[0].length,
+				y: invader['y'] + 4
+			});
+		}
+
+		function renderInvaderBullets() {
+			//TODO: Prüfen ob eine Kugel einen Invader oder ein Obstacle trifft, wenn ja Aktion auslösen
+
+			//Kugeln entfernen die am oberen Rand angekommen sind ohne Treffer
+			currentInvaderBullets = currentInvaderBullets.filter(bullet => bullet.y > 1);
+			//Kugeln einen Schritt weiter bewegen, dann rendern
+			currentInvaderBullets.forEach((bullet) => {
+				bullet.y += 1;
+				//renderStr = setCharsAt(renderStr, xyToStringPos(bullet.x, bullet.y), "|");
+				renderStr = setCharsAt(renderStr, xyToStringPos(bullet.x, bullet.y), '');
+			})
 		}
 
 
@@ -213,6 +252,8 @@
 
 			//Render Bullets
 			renderBullets(renderStr);
+
+			renderInvaderBullets();
 
 			//Gesamtergebnis anzeigen
 			document.getElementById("console").innerText = renderStr;
@@ -295,14 +336,14 @@
 						renderStr = setCharsAt(renderStr, xyToStringPos(x + xpos, y + ypos), "█");
 						renderStr = setCharsAt(renderStr, xyToStringPos(invader.length * 2 - x - 1 + xpos, y + ypos), "█")
 
-					/*
-					} else {
+						/*
+						} else {
 
-						renderStr = setCharsAt(renderStr, xyToStringPos(x + xpos, y + ypos), " ");
-						renderStr = setCharsAt(renderStr, xyToStringPos(invader.length * 2 - x - 1 + xpos, y + ypos), " ")
-					*/
+							renderStr = setCharsAt(renderStr, xyToStringPos(x + xpos, y + ypos), " ");
+							renderStr = setCharsAt(renderStr, xyToStringPos(invader.length * 2 - x - 1 + xpos, y + ypos), " ")
+						*/
 					}
-					
+
 
 				}
 
@@ -317,44 +358,44 @@
 
 		/* INVADERS */
 		const invader1 = [
-  [
-    [
-      0,
-      0,
-      0,
-      0,
-      0
-    ],
-    [
-      0,
-      0,
-      0,
-      0,
-      1
-    ],
-    [
-      0,
-      0,
-      1,
-      1,
-      0
-    ],
-    [
-      0,
-      0,
-      1,
-      1,
-      1
-    ],
-    [
-      0,
-      1,
-      0,
-      1,
-      0
-    ]
-  ]
-]
+			[
+				[
+					0,
+					0,
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0,
+					0,
+					1
+				],
+				[
+					0,
+					0,
+					1,
+					1,
+					0
+				],
+				[
+					0,
+					0,
+					1,
+					1,
+					1
+				],
+				[
+					0,
+					1,
+					0,
+					1,
+					0
+				]
+			]
+		]
 	</script>
 </body>
 

@@ -151,19 +151,20 @@
 			for (let b = 0; b < currentBullets.length; b++) {
 				for (let r = 0; r < invaderRows.length; r++) {
 					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
-							const inv = invaderRows[r].invaders[i];
-							const bullet = currentBullets[b];
-							// const dist = Math.sqrt((bullet.x - inv.posX + xoffset)^2 + (bullet.y - inv.posY + yoffset)^2);
-							// const dist = Math.sqrt(Math.pow((bullet.x - inv.posX + xoffset), 2) + Math.pow((bullet.y - inv.posY + yoffset), 2));
-							const dist = Math.sqrt(Math.pow((inv.posX + xoffset - bullet.x), 2) + Math.pow((inv.posY + yoffset - bullet.y), 2));
-							//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
-							console.log(dist);
-							
-							if (dist < inv.width / 2) {
-								inv.explode();
-							}
+						const inv = invaderRows[r].invaders[i];
+						const bullet = currentBullets[b];
+						// const dist = Math.sqrt((bullet.x - inv.posX + xoffset)^2 + (bullet.y - inv.posY + yoffset)^2);
+						// const dist = Math.sqrt(Math.pow((bullet.x - inv.posX + xoffset), 2) + Math.pow((bullet.y - inv.posY + yoffset), 2));
+						const dist = Math.sqrt(Math.pow((inv.posX + xoffset - bullet.x), 2) + Math.pow((inv.posY + yoffset - bullet
+							.y), 2));
+						//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
+						console.log(dist);
+
+						if (dist < inv.width / 2) {
+							inv.explode();
+						}
 					}
-					
+
 				}
 			}
 
@@ -189,42 +190,61 @@
 					xoffset -= xoffsetSteps;
 				}
 
+				/*
+				for (let r = 0; r < invaderRows.length; r++) {
+					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
+						const invader = invaderRows[r].invaders[i];
 
-				for (let i = 0; i < invaders.length; i++) {
-					invader = invaders[i];
-
-					if (invader.explodeState > 0) {
-						invader.explodeState += 1;
-						if (right) {
-							xoffset -= xoffsetSteps;
-						} else {
-							xoffset += xoffsetSteps;
+						if (invader.explodeState > 0) {
+							invader.explodeState += 1;
+							if (right) {
+								xoffset -= xoffsetSteps;
+							} else {
+								xoffset += xoffsetSteps;
+							}
 						}
-					}
+						*/
 
-					// let xLimit = cols - invader.appearance.length * 2;
-					let xLimit = cols - invaderRows[0].rowWidth;
-					let yLimit = rows - invader.appearance[0].length - 10;
-					if (invader.posY + yoffset <= yLimit) {
-						if (invader.posX + xoffset >= xLimit) {
-							right = false;
-							yoffset++;
-						} else if (invader.posX + xoffset <= 0) {
-							right = true;
-							yoffset++;
+				for (let r = 0; r < invaderRows.length; r++) {
+					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
+						const invader = invaderRows[r].invaders[i];
+
+						if (invader.explodeState > 0) {
+							invader.explodeState += 1;
+							/*if (right) {
+								xoffset -= xoffsetSteps;
+							} else {
+								xoffset += xoffsetSteps;
+							}*/
 						}
-					} else {
-						xoffset = 0;
-						yoffset = 0;
 					}
 				}
+
+				const invader = invaderRows[0].invaders[0];
+				// let xLimit = cols - invader.appearance.length * 2;
+				let xLimit = cols - invaderRows[0].rowWidth;
+				let yLimit = rows - invader.appearance[0].length - 10;
+				if (invader.posY + yoffset <= yLimit) {
+					if (invader.posX + xoffset >= xLimit) {
+						right = false;
+						yoffset++;
+					} else if (invader.posX + xoffset <= 0) {
+						right = true;
+						yoffset++;
+					}
+				} else {
+					xoffset = 0;
+					yoffset = 0;
+				}
+				/*}
+				}*/
 			}
 			/*
 			for (let i = 0; i < invaders.length; i++) {
 				printInvader(invaders[i]);
 			}
 			*/
-			
+
 			for (let i = 0; i < invaderRows.length; i++) {
 				printInvaderRow(invaderRows[i]);
 			}
@@ -284,19 +304,23 @@
 					for (let y = 0; y < invaderRow.invaders[i].appearance[0].length; y++) {
 						if (invaderRow.invaders[i].explodeState < 5) {
 							if (invaderRow.invaders[i].appearance[x][y] == 1) {
-								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invaderRow.invaders[i].posX + xoffset, y + invaderRow.invaders[i]
+								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invaderRow.invaders[i].posX + xoffset,
+									y + invaderRow.invaders[i]
 									.posY +
 									yoffset, cols), "█");
-								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invaderRow.invaders[i].appearance.length * 2 - x - 1 +
-								invaderRow.invaders[i]
+								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invaderRow.invaders[i].appearance.length *
+									2 - x - 1 +
+									invaderRow.invaders[i]
 									.posX +
 									xoffset, y + invaderRow.invaders[i].posY + yoffset, cols), "█")
 							} else if (invaderRow.invaders[i].appearance[x][y] == 2) {
-								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invaderRow.invaders[i].posX + xoffset, y + invaderRow.invaders[i]
+								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invaderRow.invaders[i].posX + xoffset,
+									y + invaderRow.invaders[i]
 									.posY +
 									yoffset, cols), "*");
-								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invaderRow.invaders[i].appearance.length * 2 - x - 1 +
-								invaderRow.invaders[i]
+								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invaderRow.invaders[i].appearance.length *
+									2 - x - 1 +
+									invaderRow.invaders[i]
 									.posX +
 									xoffset, y + invaderRow.invaders[i].posY + yoffset, cols), "*")
 							}

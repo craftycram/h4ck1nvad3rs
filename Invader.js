@@ -20,21 +20,23 @@ class Invader {
     // eslint-disable-next-line no-console
     console.log(`Invader ${this.id} exploded`);
 
-    for (let x = 0; x < this.width; x += 1) {
-      for (let y = 0; y < this.height; y += 1) {
-        // const randProcessed = Math.random().toString()[x * y];
-        // if (parseInt(randProcessed, 10) > 5) {
-        if (Math.random() > 0.5) {
+    if (this.explodeState < 1) {
+      for (let x = 0; x < this.width; x += 1) {
+        for (let y = 0; y < this.height; y += 1) {
+          // const randProcessed = Math.random().toString()[x * y];
+          // if (parseInt(randProcessed, 10) > 5) {
           if (Math.random() > 0.5) {
-            this.appearance[x][y] = 2;
-          } else {
-            this.appearance[x][y] = 0;
+            if (Math.random() > 0.5) {
+              this.appearance[x][y] = 2;
+            } else {
+              this.appearance[x][y] = 0;
+            }
           }
         }
       }
+      this.explodeState = 1;
     }
 
-    this.explodeState = 1;
     /* this.appearance = [
       [0, 1, 0, 2, 0],
       [0, 0, 2, 0, 1],

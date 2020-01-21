@@ -37,6 +37,7 @@
 		let spaceshipPos = Math.round(cols / 2);
 		let currentBullets = [];
 		let invaders = [];
+		let invaderRows = [];
 		let obstacles = [];
 		let run = 0;
 		let xoffset = 0;
@@ -44,7 +45,6 @@
 		let invId = 0;
 		let right = true;
 		let pause = false;
-		const temp = new InvaderRow(5, 5, cols, 5, 1, 5, 5, Math.random());
 		/*
 		 *	SPIELELOGIK
 		 */
@@ -53,7 +53,8 @@
 			//TODO Punktestände
 			//TODO Invaders erzeugen und in Array (invaders) schreiben damit sie gerendet werden können
 			invaders.push(new Invader(5, 5, 10, 10, invId++));
-
+			invaderRows.push(new InvaderRow(0, 2, cols, 5, 1, 5, 5, Math.random()));
+			invaderRows.push(new InvaderRow(0, 10, cols, 5, 1, 5, 5, Math.random()));
 
 			//Obstacles erzeugen
 			obstacles.push({
@@ -145,12 +146,30 @@
 		function renderBullets() {
 			//TODO: Prüfen ob eine Kugel einen Invader oder ein Obstacle trifft, wenn ja Aktion auslösen
 
+
+			for (let b = 0; b < currentBullets.length; b++) {
+				for (let r = 0; r < invaderRows.length; r++) {
+					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
+							const inv = invaderRows[r].invaders[i];
+							const bullet = currentBullets[b];
+
+							// const dist = Math.sqrt((bullet.posX - inv.posX + xoffset)^2 + (bullet.posY - inv.posY + yoffset)^2);
+							const dist = Math.sqrt((bullet.posX - inv.posX + xoffset)^2 + (bullet.posY - inv.posY + yoffset)^2);
+							if (dist > inv.width / 2) {
+								inv.explode();
+							}
+					}
+					
+				}
+			}
+
+
 			//Kugeln entfernen die am oberen Rand angekommen sind ohne Treffer
 			currentBullets = currentBullets.filter(bullet => bullet.y > 1);
 			//Kugeln einen Schritt weiter bewegen, dann rendern
 			currentBullets.forEach((bullet) => {
 				bullet.y -= 1;
-				renderStr = setCharsAt(renderStr, xyToStringPos(bullet.x, bullet.y, cols), "|");
+				renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(bullet.x, bullet.y, cols), "|");
 			})
 		}
 		let fun = false
@@ -162,9 +181,9 @@
 			if (run >= 1) {
 				run = 0;
 				if (right) {
-					xoffset += 5;
+					xoffset += 1;
 				} else {
-					xoffset -= 5;
+					xoffset -= 1;
 				}
 
 
@@ -174,14 +193,14 @@
 					if (invader.explodeState > 0) {
 						invader.explodeState += 1;
 						if (right) {
-							xoffset -= 5;
+							xoffset -= 1;
 						} else {
-							xoffset += 5;
+							xoffset += 1;
 						}
 					}
 
 					// let xLimit = cols - invader.appearance.length * 2;
-					let xLimit = cols - temp.invaders[0].appearance.length * 5;
+					let xLimit = cols - invaderRows[0].rowWidth;
 					let yLimit = rows - invader.appearance[0].length - 10;
 					if (invader.posY + yoffset <= yLimit) {
 						if (invader.posX + xoffset >= xLimit) {
@@ -202,7 +221,10 @@
 				printInvader(invaders[i]);
 			}
 			*/
-				printInvaderRow(temp);
+			
+			for (let i = 0; i < invaderRows.length; i++) {
+				printInvaderRow(invaderRows[i]);
+			}
 		}
 
 

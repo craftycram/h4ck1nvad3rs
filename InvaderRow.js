@@ -9,22 +9,19 @@ class InvaderRow {
     this.invWidth = invWidth;
     this.invHeight = invHeight;
     this.invaderCount = invaderCount;
-    this.invaders = this.generateInvaderRow();
     this.id = id;
-    // this.spaces = this.cols / this.invaderCount / 2;
-    // this.rowWidth = this.invWidth * this.invaderCount + this.spaces * this.invaderCount + 2;
+    this.spaces = this.cols / this.invaderCount / 2;
+    this.rowWidth = this.invWidth * this.invaderCount + this.spaces * this.invaderCount;
+    this.invaders = this.generateInvaderRow();
   }
 
   generateInvaderRow() {
     const temp = [];
-    const spaces = this.cols / this.invaderCount / 2;
-    let xPos = spaces;
-    const yPos = 0;
+    let xPos = this.spaces + this.posX;
     for (let i = 0; i < this.invaderCount; i += 1) {
       // eslint-disable-next-line no-undef
-      temp.push(new Invader(this.invWidth, this.invHeight, xPos, yPos, i, this.rand));
-      xPos += spaces + this.invWidth;
-      // @Flo: Invader als String oder Invader[] speichern
+      temp.push(new Invader(this.invWidth, this.invHeight, xPos, this.posY, i, this.rand));
+      xPos += this.spaces + this.invWidth;
     }
     return temp;
   }

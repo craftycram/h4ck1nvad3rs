@@ -152,17 +152,19 @@
 					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
 							const inv = invaderRows[r].invaders[i];
 							const bullet = currentBullets[b];
-
-							// const dist = Math.sqrt((bullet.posX - inv.posX + xoffset)^2 + (bullet.posY - inv.posY + yoffset)^2);
-							const dist = Math.sqrt((bullet.posX - inv.posX + xoffset)^2 + (bullet.posY - inv.posY + yoffset)^2);
-							if (dist > inv.width / 2) {
+							// const dist = Math.sqrt((bullet.x - inv.posX + xoffset)^2 + (bullet.y - inv.posY + yoffset)^2);
+							// const dist = Math.sqrt(Math.pow((bullet.x - inv.posX + xoffset), 2) + Math.pow((bullet.y - inv.posY + yoffset), 2));
+							const dist = Math.sqrt(Math.pow((inv.posX + xoffset - bullet.x), 2) + Math.pow((inv.posY + yoffset - bullet.y), 2));
+							//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
+							console.log(dist);
+							
+							if (dist < inv.width / 2) {
 								inv.explode();
 							}
 					}
 					
 				}
 			}
-
 
 			//Kugeln entfernen die am oberen Rand angekommen sind ohne Treffer
 			currentBullets = currentBullets.filter(bullet => bullet.y > 1);

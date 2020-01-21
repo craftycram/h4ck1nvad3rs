@@ -41,6 +41,7 @@
 		let obstacles = [];
 		let run = 0;
 		let xoffset = 0;
+		const xoffsetSteps = 1;
 		let yoffset = 0;
 		let invId = 0;
 		let right = true;
@@ -183,9 +184,9 @@
 			if (run >= 1) {
 				run = 0;
 				if (right) {
-					xoffset += 1;
+					xoffset += xoffsetSteps;
 				} else {
-					xoffset -= 1;
+					xoffset -= xoffsetSteps;
 				}
 
 
@@ -195,9 +196,9 @@
 					if (invader.explodeState > 0) {
 						invader.explodeState += 1;
 						if (right) {
-							xoffset -= 1;
+							xoffset -= xoffsetSteps;
 						} else {
-							xoffset += 1;
+							xoffset += xoffsetSteps;
 						}
 					}
 

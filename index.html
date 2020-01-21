@@ -155,7 +155,7 @@
 						const bullet = currentBullets[b];
 						// const dist = Math.sqrt((bullet.x - inv.posX + xoffset)^2 + (bullet.y - inv.posY + yoffset)^2);
 						// const dist = Math.sqrt(Math.pow((bullet.x - inv.posX + xoffset), 2) + Math.pow((bullet.y - inv.posY + yoffset), 2));
-						const dist = Math.sqrt(Math.pow((inv.posX + xoffset - bullet.x), 2) + Math.pow((inv.posY + yoffset - bullet
+						const dist = Math.sqrt(Math.pow((inv.posX + xoffset + inv.width - bullet.x), 2) + Math.pow((inv.posY + yoffset + inv.height / 2 - bullet
 							.y), 2));
 						//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
 						console.log(dist);

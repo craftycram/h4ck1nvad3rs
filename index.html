@@ -158,10 +158,10 @@
 						const dist = Math.sqrt(Math.pow((inv.posX + xoffset + inv.width - bullet.x), 2) + Math.pow((inv.posY + yoffset + inv.height / 2 - bullet
 							.y), 2));
 						//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
-						console.log(dist);
 
 						if (dist < inv.width / 2) {
 							inv.explode();
+							bullet.y = 0;
 						}
 					}
 

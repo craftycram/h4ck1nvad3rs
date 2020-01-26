@@ -9,11 +9,16 @@ class Invader {
     this.appearance = this.generateInvader();
     this.id = id;
     this.explodeState = 0;
+    this.lasers = [];
+    this.laserId = 0;
   }
 
   shootLaser() {
     // eslint-disable-next-line no-console
     console.log(`Invader ${this.id} Laser shot`);
+    // eslint-disable-next-line no-undef
+    this.lasers.push(new Laser(this.posX + this.width,
+      this.posY + this.height, this.laserId += 1));
   }
 
   explode() {

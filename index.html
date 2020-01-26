@@ -44,7 +44,7 @@
 		let xoffset = 0;
 		const xoffsetSteps = 1;
 		let yoffset = 0;
-		let invId = 0;
+		let bulletId = 0;
 		let right = true;
 		let pause = false;
 		/*
@@ -54,7 +54,7 @@
 		function newGame() {
 			//TODO Punktestände
 			//TODO Invaders erzeugen und in Array (invaders) schreiben damit sie gerendet werden können
-			invaders.push(new Invader(5, 5, 10, 10, invId++));
+			// invaders.push(new Invader(5, 5, 10, 10, invId++));
 			invaderRows.push(new InvaderRow(0, 2, cols, 5, 1, 5, 5, Math.random()));
 			invaderRows.push(new InvaderRow(0, 10, cols, 5, 1, 5, 5, Math.random()));
 
@@ -69,10 +69,7 @@
 		}
 
 		function fireBullet() {
-			currentBullets.push({
-				x: spaceshipPos + 3,
-				y: rows - 4
-			});
+			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 4, bulletId++));
 		}
 
 
@@ -156,15 +153,15 @@
 						const bullet = currentBullets[b];
 						// const dist = Math.sqrt((bullet.x - inv.posX + xoffset)^2 + (bullet.y - inv.posY + yoffset)^2);
 						// const dist = Math.sqrt(Math.pow((bullet.x - inv.posX + xoffset), 2) + Math.pow((bullet.y - inv.posY + yoffset), 2));
-						const dist = Math.sqrt(Math.pow((inv.posX + xoffset + inv.width - bullet.x), 2) + Math.pow((inv.posY +
+						const dist = Math.sqrt(Math.pow((inv.posX + xoffset + inv.width - bullet.posX), 2) + Math.pow((inv.posY +
 							yoffset + inv.height / 2 - bullet
-							.y), 2));
+							.posY), 2));
 						//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
 
 						if (dist < inv.width / 2) {
 							inv.explode();
 							if (inv.explodeState <= 1) {
-								bullet.y = 0;
+								bullet.posY = 0;
 							}
 						}
 					}
@@ -173,11 +170,11 @@
 			}
 
 			//Kugeln entfernen die am oberen Rand angekommen sind ohne Treffer
-			currentBullets = currentBullets.filter(bullet => bullet.y > 1);
+			currentBullets = currentBullets.filter(bullet => bullet.posY > 1);
 			//Kugeln einen Schritt weiter bewegen, dann rendern
 			currentBullets.forEach((bullet) => {
-				bullet.y -= 1;
-				renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(bullet.x, bullet.y, cols), "|");
+				bullet.posY -= 1;
+				renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(bullet.posX, bullet.posY, cols), "|");
 			})
 		}
 		let fun = false

@@ -29,6 +29,7 @@
 	<script src="Helper.js"></script>
 	<script src="Invader.js"></script>
 	<script src="InvaderRow.js"></script>
+	<script src="Bullet.js"></script>
 	<script>
 		let renderStr = "";
 		let rows = 50;
@@ -155,13 +156,16 @@
 						const bullet = currentBullets[b];
 						// const dist = Math.sqrt((bullet.x - inv.posX + xoffset)^2 + (bullet.y - inv.posY + yoffset)^2);
 						// const dist = Math.sqrt(Math.pow((bullet.x - inv.posX + xoffset), 2) + Math.pow((bullet.y - inv.posY + yoffset), 2));
-						const dist = Math.sqrt(Math.pow((inv.posX + xoffset + inv.width - bullet.x), 2) + Math.pow((inv.posY + yoffset + inv.height / 2 - bullet
+						const dist = Math.sqrt(Math.pow((inv.posX + xoffset + inv.width - bullet.x), 2) + Math.pow((inv.posY +
+							yoffset + inv.height / 2 - bullet
 							.y), 2));
 						//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
 
 						if (dist < inv.width / 2) {
 							inv.explode();
-							bullet.y = 0;
+							if (inv.explodeState <= 1) {
+								bullet.y = 0;
+							}
 						}
 					}
 

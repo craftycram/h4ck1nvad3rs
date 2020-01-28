@@ -5,24 +5,13 @@
 <head>
 	<meta charset="utf-8">
 	<title>HACKINVADERS</title>
-	<style>
-		pre {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			-webkit-transform: translate(-50%, -50%);
-			transform: translate(-50%, -50%);
-			border: 1px solid gray;
-		}
-
-		body {
-			color: white;
-			background-color: black;
-		}
-	</style>
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+	<button class="newgame" onclick="location.reload()">Restart</button>
+	<button class="pause" onclick="pause = !pause">Pause</button>
+	<p class="scoreboard" id="scoreboard">SCOREBOARD<br></p>
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
   </pre>
@@ -367,9 +356,11 @@
 
 				//Gesamtergebnis anzeigen
 				document.getElementById("console").innerText = renderStr;
+				document.getElementById("scoreboard").innerText = "Scoreboard \n" + invaderShotCount;
 			}
 		}
 
+		
 		function printInvader(invader) {
 			for (let x = 0; x < invader.appearance.length; x++) {
 				for (let y = 0; y < invader.appearance[0].length; y++) {

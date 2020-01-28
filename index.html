@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>SPACE INVADERS</title>
+	<title>HACKINVADERS</title>
 	<style>
 		pre {
 			position: absolute;
@@ -49,6 +49,7 @@
 		let bulletId = 0;
 		let endOfGame = 0;
 		let speed = 25;
+		let invaderShotCount = 0;
 		let spaceship = ["   #   ",
 			"#######",
 			"#######"
@@ -174,6 +175,7 @@
 							inv.explode();
 							if (inv.explodeState <= 1) {
 								bullet.posY = 0;
+								invaderShotCount += 1;
 							}
 						}
 					}
@@ -345,6 +347,10 @@
 				if (endOfGame < 5) {
 					//Render Obstacle
 					renderObstacles();
+				}
+
+				if (endOfGame > 50) {
+					window.open("test/index.html", "_self")
 				}
 
 				//Render Spaceship

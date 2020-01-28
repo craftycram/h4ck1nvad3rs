@@ -88,8 +88,11 @@
 				//Leertase - Feuer!
 				fireBullet();
 			} else if (keyCode === 69) {
-				for (let i = 0; i < invaders.length; i++) {
-					invaders[i].explode();
+				for (let r = 0; r < invaderRows.length; r++) {
+					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
+						const invader = invaderRows[r].invaders[i];
+						invader.explode();
+					}
 				}
 			} else if (keyCode === 80) {
 				pause = !pause;
@@ -332,14 +335,16 @@
 
 				//Render Background
 				renderStr = renderBackground(rows, cols);
-				
+
 				if (endOfGame < 5) {
 					//Render Obstacle
 					renderObstacles();
+				} else {
+					playerLost();
 				}
 
 				if (endOfGame > 50) {
-					window.open("test/index.html", "_self")
+					pwindow.open("test/index.html", "_self")
 				}
 
 				//Render Spaceship
@@ -351,6 +356,12 @@
 				//Render Bullets
 				renderBullets(renderStr);
 
+				if (checkPlayerWon()) {
+					if (endOfGame == 0) {
+						playerWon();
+					}
+				}
+
 				//Render Lasers
 				renderLasers(renderStr);
 
@@ -360,7 +371,62 @@
 			}
 		}
 
-		
+		function checkPlayerWon() {
+			for (let r = 0; r < invaderRows.length; r++) {
+				for (let i = 0; i < invaderRows[r].invaders.length; i++) {
+					const invader = invaderRows[r].invaders[i];
+					if (invader.explodeState == 0) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		function playerWon() {
+			textOffsetX = (cols / 2) - (60 / 2);
+			textOffsetY = (rows / 2) - (6 / 2);
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 1, cols),
+				"██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗ ██████╗ ███╗   ██╗");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 2, cols),
+				"╚██╗ ██╔╝██╔═══██╗██║   ██║    ██║    ██║██╔═══██╗████╗  ██║");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 3, cols),
+				" ╚████╔╝ ██║   ██║██║   ██║    ██║ █╗ ██║██║   ██║██╔██╗ ██║");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 4, cols),
+				"  ╚██╔╝  ██║   ██║██║   ██║    ██║███╗██║██║   ██║██║╚██╗██║");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 5, cols),
+				"   ██║   ╚██████╔╝╚██████╔╝    ╚███╔███╔╝╚██████╔╝██║ ╚████║");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 6, cols),
+				"   ╚═╝    ╚═════╝  ╚═════╝      ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═══╝");
+
+		}
+
+		function playerLost() {
+			textOffsetX = (cols / 2) - (72 / 2);
+			textOffsetY = (rows / 2) - (10 / 2);
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 1, cols),
+				"  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  ");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 2, cols),
+				" ██▒ ▀█▒▒████▄    ▓██▒▀█▀ ██▒▓█   ▀    ▒██▒  ██▒▓██░   █▒▓█   ▀ ▓██ ▒ ██▒");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 3, cols),
+				"▒██░▄▄▄░▒██  ▀█▄  ▓██    ▓██░▒███      ▒██░  ██▒ ▓██  █▒░▒███   ▓██ ░▄█ ▒");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 4, cols),
+				"░▓█  ██▓░██▄▄▄▄██ ▒██    ▒██ ▒▓█  ▄    ▒██   ██░  ▒██ █░░▒▓█  ▄ ▒██▀▀█▄  ");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 5, cols),
+				"░▒▓███▀▒ ▓█   ▓██▒▒██▒   ░██▒░▒████▒   ░ ████▓▒░   ▒▀█░  ░▒████▒░██▓ ▒██▒");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 6, cols),
+				" ░▒   ▒  ▒▒   ▓▒█░░ ▒░   ░  ░░░ ▒░ ░   ░ ▒░▒░▒░    ░ ▐░  ░░ ▒░ ░░ ▒▓ ░▒▓░");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 7, cols),
+				"  ░   ░   ▒   ▒▒ ░░  ░      ░ ░ ░  ░     ░ ▒ ▒░    ░ ░░   ░ ░  ░  ░▒ ░ ▒░");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 8, cols),
+				"░ ░   ░   ░   ▒   ░      ░      ░      ░ ░ ░ ▒       ░░     ░     ░░   ░ ");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 9, cols),
+				"      ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░     ");
+			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 10, cols),
+				"                                                     ░                   ");
+
+		}
+
 		function printInvader(invader) {
 			for (let x = 0; x < invader.appearance.length; x++) {
 				for (let y = 0; y < invader.appearance[0].length; y++) {

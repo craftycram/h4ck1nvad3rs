@@ -1,4 +1,16 @@
 
+$(document).ready(function () {
+	$("body").click(function(event) {
+		window.open("../index.html","_self");
+	});	
+	$('body').keydown(function(e) {
+		if((e.which == 27) || (e.which == 13)) {	//Enter Esc
+			window.open("../index.html","_self");
+		}		
+	});
+});
+
+
 let message = 'Right-click disabled';
 
 function clickIE() {

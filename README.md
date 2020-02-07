@@ -6,6 +6,8 @@ There we should build our game. The template already contained code, which descr
 Our task was then to represent the invaders, let them wander, shoot and make them hit the target.
 Furthermore a variable should count up the hits.
 
+play now: [](https://itmr-dev.de/invaders)
+
 ## How to play
 The game can be cloned directly from GitHub.
 Opening the file "index.html" will launch the browser set as default and the game will start immediately.

@@ -9,52 +9,54 @@
 </head>
 
 <body>
-	<button class="newgame" onclick="location.reload()">Restart</button>
-	<button class="pause" onclick="pause = !pause">Pause</button>
-	<p class="scoreboard" id="scoreboard">SCOREBOARD<br></p>
+	<button class="newgame" onclick="location.reload()">Restart</button> <!-- creates reload button -->
+	<button class="pause" onclick="pause = !pause">Pause</button> <!-- creates pause button -->
+	<p class="scoreboard" id="scoreboard">SCOREBOARD<br></p> <!-- adds scoreboard -->
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
   </pre>
-	<script src="Helper.js"></script>
-	<script src="Invader.js"></script>
-	<script src="InvaderRow.js"></script>
-	<script src="Bullet.js"></script>
-	<script src="Laser.js"></script>
+	<script src="Helper.js"></script> <!-- imports Helper class -->
+	<script src="Invader.js"></script> <!-- imports Invader class -->
+	<script src="InvaderRow.js"></script> <!-- imports InvaderRow class -->
+	<script src="Bullet.js"></script> <!-- imports Bullet class -->
+	<script src="Laser.js"></script> <!-- imports Laser class -->
 	<script>
-		let renderStr = "";
-		let rows = 50;
-		let cols = 140;
+		let renderStr = ""; // String of all characters printed on screen
+		let rows = 50; // screen height
+		let cols = 140; // screen width
 		let cnt = 0;
-		let spaceshipPos = Math.round(cols / 2);
-		let currentBullets = [];
-		let invaders = [];
-		let invaderRows = [];
-		let obstacles = [];
-		let run = 0;
-		let run2 = 0;
-		let xoffset = 0;
-		const xoffsetSteps = 1;
-		let yoffset = 0;
-		let bulletId = 0;
-		let endOfGame = 0;
-		let speed = 25;
-		let invaderShotCount = 0;
+		let spaceshipPos = Math.round(cols / 2); // spaceship position
+		let currentBullets = []; // all currently visible bullets
+		// let invaders = []; 
+		let invaderRows = []; // array of all invader rows
+		let obstacles = []; // array of all obstacles
+		let run = 0; // var counting every render
+		let run2 = 0; // var counting renders
+		let xoffset = 0; // render x-offset of invaders and lasers
+		const xoffsetSteps = 1; // count of character to jump each xoffset step 
+		let yoffset = 0; // render y-offset of invaders and lasers
+		let bulletId = 0; // var to count up and give each bullet an id
+		let endOfGame = 0; // var to save game state / to handle end of game actions
+		let speed = 25; // interval of runs to move invaders
+		let invaderShotCount = 0; // 
 		let spaceship = ["   #   ",
 			"#######",
 			"#######"
-		]
-		let right = true;
-		let pause = false;
+		] // spaceship appereance
+		let right = true; // sets invader move direction
+		let pause = false; // game pause
 		/*
 		 *	SPIELELOGIK
 		 */
 		//Kugel abfeuern
-		function newGame() {
+		function newGame() { // creates new game
 			//TODO Punktestände
 			//TODO Invaders erzeugen und in Array (invaders) schreiben damit sie gerendet werden können
 			// invaders.push(new Invader(5, 5, 10, 10, invId++));
-			invaderRows.push(new InvaderRow(0, 2, cols, 5, 1, 5, 5, Math.random()));
-			invaderRows.push(new InvaderRow(0, 10, cols, 5, 1, 5, 5, Math.random()));
+			invaderRows.push(new InvaderRow(0, 2, cols, 5, 1, 5, 5, Math
+				.random())); // creates instance of InvaderRow class & pushes it into array
+			invaderRows.push(new InvaderRow(0, 10, cols, 5, 1, 5, 5, Math
+				.random())); // creates instance of InvaderRow class & pushes it into array
 
 			//Obstacles erzeugen
 			obstacles.push({
@@ -67,7 +69,8 @@
 		}
 
 		function fireBullet() {
-			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 4, bulletId++));
+			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 4,
+				bulletId++)); // creates instance of Bullet class & pushes it into array
 		}
 
 
@@ -77,27 +80,33 @@
 		//Spieler-Interaktionen verschicken
 		document.addEventListener('keydown', (event) => {
 			const keyCode = event.keyCode;
-
-			if (keyCode === 37) {
-				//Linke Pfeiltaste - Spaceship nach links bewegen
-				spaceshipPos = Math.max(0, spaceshipPos - 1);
-			} else if (keyCode === 39) {
-				//Rechte Pfeiltaste - Spaceship nach rechts bewegen
-				spaceshipPos = Math.min(cols - 7, spaceshipPos + 1);
-			} else if (keyCode === 32) {
-				//Leertase - Feuer!
-				fireBullet();
-			} else if (keyCode === 69) {
-				for (let r = 0; r < invaderRows.length; r++) {
-					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
-						const invader = invaderRows[r].invaders[i];
-						invader.explode();
+			if (endOfGame < 1) {
+				if (keyCode === 37) {
+					//Linke Pfeiltaste - Spaceship nach links bewegen
+					spaceshipPos = Math.max(0, spaceshipPos - 1);
+				} else if (keyCode === 39) {
+					//Rechte Pfeiltaste - Spaceship nach rechts bewegen
+					spaceshipPos = Math.min(cols - 7, spaceshipPos + 1);
+				} else if (keyCode === 32) {
+					//Leertase - Feuer!
+					fireBullet();
+				} else if (keyCode === 69) {
+					// explode all invaders
+					for (let r = 0; r < invaderRows.length; r++) {
+						for (let i = 0; i < invaderRows[r].invaders.length; i++) {
+							const invader = invaderRows[r].invaders[i];
+							invader.explode();
+						}
 					}
+
+				} else if (keyCode === 76) {
+					// let invader (2nd row, 3rd invader)
+					invaderRows[1].invaders[2].shootLaser();
 				}
-			} else if (keyCode === 80) {
+			}
+			if (keyCode === 80) {
+				// switch game pause
 				pause = !pause;
-			} else if (keyCode === 76) {
-				invaderRows[1].invaders[2].shootLaser();
 			}
 		}, false);
 
@@ -150,25 +159,25 @@
 		function renderBullets() {
 			//TODO: Prüfen ob eine Kugel einen Invader oder ein Obstacle trifft, wenn ja Aktion auslösen
 
-
+			// get every invader
 			for (let b = 0; b < currentBullets.length; b++) {
 				for (let r = 0; r < invaderRows.length; r++) {
 					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
-						const inv = invaderRows[r].invaders[i];
-						const bullet = currentBullets[b];
+						const inv = invaderRows[r].invaders[i]; // current invader
+						const bullet = currentBullets[b]; // current bullet
 						// const dist = Math.sqrt((bullet.x - inv.posX + xoffset)^2 + (bullet.y - inv.posY + yoffset)^2);
 						// const dist = Math.sqrt(Math.pow((bullet.x - inv.posX + xoffset), 2) + Math.pow((bullet.y - inv.posY + yoffset), 2));
 						const dist = Math.sqrt(Math.pow((inv.posX + xoffset + inv.width - bullet.posX), 2) + Math.pow((inv.posY +
 							yoffset + inv.height / 2 - bullet
-							.posY), 2));
+							.posY), 2)); // calculate distance between invader and bullet
 						//const dist = Math.sqrt(((inv.posX + xoffset) - bullet.x)^2 + ((inv.posY + yoffset) - bullet.y)^2);
 
-						if (dist < inv.width / 2) {
-							inv.explode();
-							if (inv.explodeState <= 1) {
-								bullet.posY = 0;
-								invaderShotCount += 1;
+						if (dist < inv.width / 2) { // check distance smaller than invader radius
+							if (inv.explodeState < 1) { // check if invader exploded already
+								bullet.posY = 0; // remove bullet
+								invaderShotCount += 1; // increase invader shot count
 							}
+							inv.explode(); // explode invader
 						}
 					}
 
@@ -179,8 +188,8 @@
 			currentBullets = currentBullets.filter(bullet => bullet.posY > 1);
 			//Kugeln einen Schritt weiter bewegen, dann rendern
 			currentBullets.forEach((bullet) => {
-				bullet.posY -= 1;
-				renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(bullet.posX, bullet.posY, cols), "|");
+				bullet.posY -= 1; // move bullet
+				renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(bullet.posX, bullet.posY, cols), "|"); // print bullet
 			})
 		}
 		let fun = false
@@ -189,23 +198,23 @@
 		function renderLasers() {
 			//TODO: Prüfen ob eine Kugel einen Invader oder ein Obstacle trifft, wenn ja Aktion auslösen
 
-
+			// get every invader
 			for (let r = 0; r < invaderRows.length; r++) {
 				for (let i = 0; i < invaderRows[r].invaders.length; i++) {
 					for (let l = 0; l < invaderRows[r].invaders[i].lasers.length; l++) {
-						const laser = invaderRows[r].invaders[i].lasers[l];
+						const laser = invaderRows[r].invaders[i].lasers[l]; // current laser
 
 
 						const dist = Math.sqrt(Math.pow((laser.posX + xoffset - (spaceshipPos + 3)), 2) + Math.pow((laser
-							.posY + yoffset - (rows - 2)), 2));
+							.posY + yoffset - (rows - 2)), 2)); // calculate distance between laser and spaceship
 
 
 
-						if (dist < 3) {
-							if (endOfGame < 1) {
-								endOfGame += 1;
-								speed = 5;
-								spaceship = [];
+						if (dist < 3) { // check distance is smaller than 3 
+							if (endOfGame < 1) { // check game state
+								endOfGame += 1; // increase game state
+								speed = 5; // set render speed
+								spaceship = []; // remove spaceship
 							}
 							/*
 							if (inv.explodeState <= 1) {
@@ -214,17 +223,17 @@
 							*/
 						}
 
-						renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(spaceshipPos + 3, rows - 2, cols), "X")
+						renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(spaceshipPos + 3, rows - 2, cols), "X") // add hit marker in spaceship when lasers on screen
 
 						//Kugeln entfernen die am oberen Rand angekommen sind ohne Treffer
 						invaderRows[r].invaders[i].lasers = invaderRows[r].invaders[i].lasers.filter(laser => laser.posY + yoffset <
 							rows);
 						//Kugeln einen Schritt weiter bewegen, dann rendern
 						invaderRows[r].invaders[i].lasers.forEach((laser) => {
-							laser.posY += 1;
+							laser.posY += 1; // move bullet
 							renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(laser.posX + xoffset, laser.posY +
 								yoffset,
-								cols), "|");
+								cols), "|"); // print bullet
 						})
 					}
 				}
@@ -233,19 +242,19 @@
 
 		function renderInvaders() {
 			//TODO Invaders rendern
-			run++;
+			run++; // increase render counter
 			// if (run >= 15) {
 			if (run >= speed) {
-				run = 0;
-				run2 += 1;
-				if (endOfGame < 1) {
-					if (right) {
-						xoffset += xoffsetSteps;
+				run = 0; // reset render counter
+				run2 += 1; // increase child render counter
+				if (endOfGame < 1) { // check game state
+					if (right) { // check direction
+						xoffset += xoffsetSteps; // move invaders right
 					} else {
-						xoffset -= xoffsetSteps;
+						xoffset -= xoffsetSteps; // move invaders left
 					}
 				} else {
-					endOfGame++;
+					endOfGame++; // increase game state
 				}
 
 
@@ -265,12 +274,13 @@
 						}
 						*/
 
+				// get every invader
 				for (let r = 0; r < invaderRows.length; r++) {
 					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
-						const invader = invaderRows[r].invaders[i];
+						const invader = invaderRows[r].invaders[i]; // current invader
 
-						if (invader.explodeState > 0) {
-							invader.explodeState += 1;
+						if (invader.explodeState > 0) { // check invader explode state
+							invader.explodeState += 1; // increase invader explode state
 							/*if (right) {
 								xoffset -= xoffsetSteps;
 							} else {
@@ -280,38 +290,38 @@
 					}
 				}
 
-				const invader = invaderRows[0].invaders[0];
+				const invader = invaderRows[0].invaders[0]; // get first invader
 				// let xLimit = cols - invader.appearance.length * 2;
-				let xLimit = cols - invaderRows[0].rowWidth;
-				let yLimit = rows - invader.appearance[0].length - 10;
-				if (invader.posY + yoffset <= yLimit) {
-					if (invader.posX + xoffset >= xLimit) {
-						right = false;
-						yoffset++;
-					} else if (invader.posX + xoffset <= 0) {
-						right = true;
-						yoffset++;
+				let xLimit = cols - invaderRows[0].rowWidth; // get right border colission limit
+				let yLimit = rows - invader.appearance[0].length - 10; // get bottom border colission limit
+				if (invader.posY + yoffset <= yLimit) { // check invader hit bottom limit
+					if (invader.posX + xoffset >= xLimit) { // check invader hit right limit
+						right = false; // make invaders move left
+						yoffset++; // move invaders one row
+					} else if (invader.posX + xoffset <= 0) { // check invader hit left limit
+						right = true; // make invaders move right
+						yoffset++; // move invaders one row
 					}
 				} else {
-					xoffset = 0;
-					yoffset = 0;
-					pause = true;
+					endOfGame += 1;
 				}
 				/*}
 				}*/
 			}
 
 			if (run2 == 2) {
-				run2 = 0;
-				randRow = Math.floor(Math.random() * invaderRows.length);
+				run2 = 0; // reset second render counter
+				randRow = Math.floor(Math.random() * invaderRows.length); // select random InvaderRow
 				console.log(randRow);
-				randInv = Math.floor(Math.random() * invaderRows[randRow].invaderCount);
+				randInv = Math.floor(Math.random() * invaderRows[randRow].invaderCount); // select random Invader from InvaderRow
 				console.log(randInv);
-				if (invaderRows[randRow].invaders[randInv].explodeState < 1) {
-					if (endOfGame < 1) {
+				if (invaderRows[randRow].invaders[randInv].explodeState < 1) { // check if invader already exploded
+					if (endOfGame < 1) { // check game state
+						// if game is still on make invader shoot
 						invaderRows[randRow].invaders[randInv].shootLaser();
 					} else {
 						if (endOfGame > 10) {
+							// if game is over make invader explode
 							invaderRows[randRow].invaders[randInv].explode();
 						}
 					}
@@ -324,6 +334,7 @@
 			*/
 
 			for (let i = 0; i < invaderRows.length; i++) {
+				// print all saved InvaderRows
 				printInvaderRow(invaderRows[i]);
 			}
 		}
@@ -331,20 +342,20 @@
 
 		//Hauptrenderfunktion
 		function render() {
-			if (!pause) {
+			if (!pause) { // check if game is paused
 
 				//Render Background
 				renderStr = renderBackground(rows, cols);
 
-				if (endOfGame < 5) {
+				if (endOfGame < 5) { // check game state
 					//Render Obstacle
-					renderObstacles();
+					//renderObstacles();
 				} else {
-					playerLost();
+					playerLost(); // show game over screen
 				}
 
-				if (endOfGame > 50) {
-					window.open("test/index.html", "_self")
+				if (endOfGame > 50) { // check game state
+					window.open("test/index.html", "_self") // open matrix animation
 				}
 
 				//Render Spaceship
@@ -356,9 +367,9 @@
 				//Render Bullets
 				renderBullets(renderStr);
 
-				if (checkPlayerWon()) {
-					if (endOfGame == 0) {
-						playerWon();
+				if (checkPlayerWon()) { // check if player won 
+					if (endOfGame == 0) { // check if player didnt loose already
+						playerWon(); // show player won text
 					}
 				}
 
@@ -366,26 +377,28 @@
 				renderLasers(renderStr);
 
 				//Gesamtergebnis anzeigen
-				document.getElementById("console").innerText = renderStr;
-				document.getElementById("scoreboard").innerText = "Scoreboard \n" + invaderShotCount;
+				document.getElementById("console").innerText = renderStr; // show game screen
+				document.getElementById("scoreboard").innerText = "Scoreboard \n" + invaderShotCount; // show scoreboard
 			}
 		}
 
 		function checkPlayerWon() {
+			// get all invaders
 			for (let r = 0; r < invaderRows.length; r++) {
 				for (let i = 0; i < invaderRows[r].invaders.length; i++) {
-					const invader = invaderRows[r].invaders[i];
-					if (invader.explodeState == 0) {
-						return false;
+					const invader = invaderRows[r].invaders[i]; // current invader
+					if (invader.explodeState == 0) { // check explode state
+						return false; // not exploded invader exists
 					}
 				}
 			}
-			return true;
+			return true; // all invaders exploded
 		}
 
 		function playerWon() {
-			textOffsetX = (cols / 2) - (60 / 2);
-			textOffsetY = (rows / 2) - (6 / 2);
+			textOffsetX = (cols / 2) - (60 / 2); // calculate horizontal text align center
+			textOffsetY = (rows / 2) - (6 / 2); // calculate vertical text align center
+			// print big text "you won"
 			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 1, cols),
 				"██╗   ██╗ ██████╗ ██╗   ██╗    ██╗    ██╗ ██████╗ ███╗   ██╗");
 			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 2, cols),
@@ -402,8 +415,9 @@
 		}
 
 		function playerLost() {
-			textOffsetX = (cols / 2) - (72 / 2);
-			textOffsetY = (rows / 2) - (10 / 2);
+			textOffsetX = (cols / 2) - (72 / 2); // calculate horizontal text align center
+			textOffsetY = (rows / 2) - (10 / 2); // calculate vertical text align center
+			// print big text "game over"
 			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 1, cols),
 				"  ▄████  ▄▄▄       ███▄ ▄███▓▓█████     ▒█████   ██▒   █▓▓█████  ██▀███  ");
 			renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(textOffsetX, textOffsetY + 2, cols),

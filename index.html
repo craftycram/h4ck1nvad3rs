@@ -442,23 +442,23 @@
 		}
 
 		function printInvader(invader) {
-			for (let x = 0; x < invader.appearance.length; x++) {
-				for (let y = 0; y < invader.appearance[0].length; y++) {
-					if (invader.explodeState < 5) {
-						if (invader.appearance[x][y] == 1) {
+			for (let x = 0; x < invader.appearance.length; x++) { // cycles through x coordinates of invader's appearance
+				for (let y = 0; y < invader.appearance[0].length; y++) { // cycles through y coordinates of invader's appearance
+					if (invader.explodeState < 5) { // checks invader's explode state smaller than 5
+						if (invader.appearance[x][y] == 1) { // checks if there is a visible pixel in the invader's appearance
 							renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invader.posX + xoffset, y + invader.posY +
-								yoffset, cols), "█");
+								yoffset, cols), "█"); // prints invader character (1st half)
 							renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invader.appearance.length * 2 - x - 1 +
 								invader
 								.posX +
-								xoffset, y + invader.posY + yoffset, cols), "█")
-						} else if (invader.appearance[x][y] == 2) {
+								xoffset, y + invader.posY + yoffset, cols), "█") // prints invader character (2nd half)
+						} else if (invader.appearance[x][y] == 2) { // checks if there is an explosion pixel in the invader's appearance
 							renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invader.posX + xoffset, y + invader.posY +
-								yoffset, cols), "*");
+								yoffset, cols), "*"); // prints invader explosion character (1st half)
 							renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invader.appearance.length * 2 - x - 1 +
 								invader
 								.posX +
-								xoffset, y + invader.posY + yoffset, cols), "*")
+								xoffset, y + invader.posY + yoffset, cols), "*") // prints invader explosion character (2nd half)
 						}
 					}
 				}
@@ -467,29 +467,29 @@
 
 		function printInvaderRow(invaderRow) {
 			for (let i = 0; i < invaderRow.invaders.length; i++) {
-				for (let x = 0; x < invaderRow.invaders[i].appearance.length; x++) {
-					for (let y = 0; y < invaderRow.invaders[i].appearance[0].length; y++) {
-						if (invaderRow.invaders[i].explodeState < 5) {
-							if (invaderRow.invaders[i].appearance[x][y] == 1) {
+				for (let x = 0; x < invaderRow.invaders[i].appearance.length; x++) { // cycles through x coordinates of invader's appearance
+					for (let y = 0; y < invaderRow.invaders[i].appearance[0].length; y++) { // cycles through y coordinates of invader's appearance
+						if (invaderRow.invaders[i].explodeState < 5) { // checks invader's explode state smaller than 5
+							if (invaderRow.invaders[i].appearance[x][y] == 1) { // checks if there is a visible pixel in the invader's appearance
 								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invaderRow.invaders[i].posX + xoffset,
 									y + invaderRow.invaders[i]
 									.posY +
-									yoffset, cols), "█");
+									yoffset, cols), "█"); // prints invader character (1st half)
 								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invaderRow.invaders[i].appearance.length *
 									2 - x - 1 +
 									invaderRow.invaders[i]
 									.posX +
-									xoffset, y + invaderRow.invaders[i].posY + yoffset, cols), "█")
-							} else if (invaderRow.invaders[i].appearance[x][y] == 2) {
+									xoffset, y + invaderRow.invaders[i].posY + yoffset, cols), "█") // prints invader character (2nd half)
+							} else if (invaderRow.invaders[i].appearance[x][y] == 2) { // checks if there is an explosion pixel in the invader's appearance
 								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invaderRow.invaders[i].posX + xoffset,
 									y + invaderRow.invaders[i]
 									.posY +
-									yoffset, cols), "*");
+									yoffset, cols), "*"); // prints invader explosion character (1st half)
 								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invaderRow.invaders[i].appearance.length *
 									2 - x - 1 +
 									invaderRow.invaders[i]
 									.posX +
-									xoffset, y + invaderRow.invaders[i].posY + yoffset, cols), "*")
+									xoffset, y + invaderRow.invaders[i].posY + yoffset, cols), "*") // prints invader explosion character (2nd half)
 							}
 						}
 					}

@@ -9,52 +9,52 @@
 </head>
 
 <body>
-	<button class="newgame" onclick="location.reload()">Restart</button>
-	<button class="pause" onclick="pause = !pause">Pause</button>
-	<p class="scoreboard" id="scoreboard">SCOREBOARD<br></p>
+	<button class="newgame" onclick="location.reload()">Restart</button> <!-- creates reload button -->
+	<button class="pause" onclick="pause = !pause">Pause</button> <!-- creates pause button -->
+	<p class="scoreboard" id="scoreboard">SCOREBOARD<br></p> <!-- adds scoreboard -->
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
   </pre>
-	<script src="Helper.js"></script>
-	<script src="Invader.js"></script>
-	<script src="InvaderRow.js"></script>
-	<script src="Bullet.js"></script>
-	<script src="Laser.js"></script>
+	<script src="Helper.js"></script> <!-- imports Helper class -->
+	<script src="Invader.js"></script> <!-- imports Invader class -->
+	<script src="InvaderRow.js"></script> <!-- imports InvaderRow class -->
+	<script src="Bullet.js"></script> <!-- imports Bullet class -->
+	<script src="Laser.js"></script> <!-- imports Laser class -->
 	<script>
-		let renderStr = "";
-		let rows = 50;
-		let cols = 140;
-		let cnt = 0;
-		let spaceshipPos = Math.round(cols / 2);
-		let currentBullets = [];
-		let invaders = [];
-		let invaderRows = [];
-		let obstacles = [];
-		let run = 0;
-		let run2 = 0;
-		let xoffset = 0;
-		const xoffsetSteps = 1;
-		let yoffset = 0;
-		let bulletId = 0;
-		let endOfGame = 0;
-		let speed = 25;
-		let invaderShotCount = 0;
+		let renderStr = ""; // String of all characters printed on screen
+		let rows = 50; // screen height
+		let cols = 140; // screen width
+		let cnt = 0; 
+		let spaceshipPos = Math.round(cols / 2); // spaceship position
+		let currentBullets = []; // all currently visible bullets
+		// let invaders = []; 
+		let invaderRows = []; // array of all invader rows
+		let obstacles = []; // array of all obstacles
+		let run = 0; // var counting every render
+		let run2 = 0; // var counting renders
+		let xoffset = 0; // render x-offset of invaders and lasers
+		const xoffsetSteps = 1; // count of character to jump each xoffset step 
+		let yoffset = 0; // render y-offset of invaders and lasers
+		let bulletId = 0; // var to count up and give each bullet an id
+		let endOfGame = 0; // var to save game state / to handle end of game actions
+		let speed = 25; // interval of runs to move invaders
+		let invaderShotCount = 0; // 
 		let spaceship = ["   #   ",
 			"#######",
 			"#######"
-		]
-		let right = true;
-		let pause = false;
+		] // spaceship appereance
+		let right = true; // sets invader move direction
+		let pause = false; // game pause
 		/*
 		 *	SPIELELOGIK
 		 */
 		//Kugel abfeuern
-		function newGame() {
+		function newGame() { // creates new game
 			//TODO Punktestände
 			//TODO Invaders erzeugen und in Array (invaders) schreiben damit sie gerendet werden können
 			// invaders.push(new Invader(5, 5, 10, 10, invId++));
-			invaderRows.push(new InvaderRow(0, 2, cols, 5, 1, 5, 5, Math.random()));
-			invaderRows.push(new InvaderRow(0, 10, cols, 5, 1, 5, 5, Math.random()));
+			invaderRows.push(new InvaderRow(0, 2, cols, 5, 1, 5, 5, Math.random())); // creates instance of InvaderRow class & pushes it into array
+			invaderRows.push(new InvaderRow(0, 10, cols, 5, 1, 5, 5, Math.random())); // creates instance of InvaderRow class & pushes it into array
 
 			//Obstacles erzeugen
 			obstacles.push({
@@ -67,7 +67,7 @@
 		}
 
 		function fireBullet() {
-			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 4, bulletId++));
+			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 4, bulletId++)); // creates instance of Bullet class & pushes it into array
 		}
 
 
@@ -88,6 +88,7 @@
 				//Leertase - Feuer!
 				fireBullet();
 			} else if (keyCode === 69) {
+				// explode all invaders
 				for (let r = 0; r < invaderRows.length; r++) {
 					for (let i = 0; i < invaderRows[r].invaders.length; i++) {
 						const invader = invaderRows[r].invaders[i];
@@ -95,8 +96,10 @@
 					}
 				}
 			} else if (keyCode === 80) {
+				// switch game pause
 				pause = !pause;
 			} else if (keyCode === 76) {
+				// let invader (2nd row, 3rd invader)
 				invaderRows[1].invaders[2].shootLaser();
 			}
 		}, false);

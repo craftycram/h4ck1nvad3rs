@@ -1,4 +1,4 @@
-# Space Invaders
+# hackINvaders
 This is a version of SpaceInvaders written in the lectures of Florian Geiselhart @hfg-gmuend.
 We used the original game as a template and added the basic features with our interpretation how the game should work.
 For this our lecturer gave us a [GitHub repository](github.com/hfgcoding/01_03_spacebase/) as a template with rough instructions.

@@ -11,6 +11,9 @@
 <body>
 	<button class="newgame" onclick="location.reload()">Restart</button> <!-- creates reload button -->
 	<button class="pause" onclick="pause = !pause">Pause</button> <!-- creates pause button -->
+	<button class="easy" onclick="speed = 25">Easy</button> <!-- creates pause button -->
+	<button class="normal" onclick="speed = 15">Normal</button> <!-- creates pause button -->
+	<button class="hard" onclick="speed = 5">Hard</button> <!-- creates pause button -->
 	<p class="scoreboard" id="scoreboard">SCOREBOARD<br></p> <!-- adds scoreboard -->
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
@@ -37,7 +40,7 @@
 		let yoffset = 0; // render y-offset of invaders and lasers
 		let bulletId = 0; // var to count up and give each bullet an id
 		let endOfGame = 0; // var to save game state / to handle end of game actions
-		let speed = 25; // interval of runs to move invaders
+		let speed = 15; // interval of runs to move invaders
 		let invaderShotCount = 0; // 
 		let spaceship = ["   #   ",
 			"#######",

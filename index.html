@@ -9,12 +9,19 @@
 </head>
 
 <body>
-	<button class="newgame" onclick="location.reload()">Restart</button> <!-- creates reload button -->
-	<button class="pause" onclick="pause = !pause">Pause</button> <!-- creates pause button -->
-	<button class="easy" onclick="speed = 25">Easy</button> <!-- creates pause button -->
-	<button class="normal" onclick="speed = 15">Normal</button> <!-- creates pause button -->
-	<button class="hard" onclick="speed = 5">Hard</button> <!-- creates pause button -->
-	<p class="scoreboard" id="scoreboard">SCOREBOARD<br></p> <!-- adds scoreboard -->
+	<div class="controls-box">
+		<button class="button" onclick="location.reload()">Restart</button> <!-- creates reload button -->
+		<br>
+		<button class="button" onclick="pause = !pause">Pause</button> <!-- creates pause button -->
+		<br>
+		<br>
+		<button class="button" onclick="speed = 25">Easy</button> <!-- creates pause button -->
+		<br>
+		<button class="button" onclick="speed = 15">Normal</button> <!-- creates pause button -->
+		<br>
+		<button class="button" onclick="speed = 5">Hard</button> <!-- creates pause button -->
+	</div>
+	<p class="scoreboard" id="scoreboard">SCOREBOARD<br>ERROR LOADING</p> <!-- adds scoreboard -->
 	<pre id="console">
   	<!-- Hier landet später der Output aus Javascript -->
   </pre>

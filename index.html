@@ -49,10 +49,11 @@
 		let endOfGame = 0; // var to save game state / to handle end of game actions
 		let speed = 15; // interval of runs to move invaders
 		let invaderShotCount = 0; // 
-		let spaceship = ["   #   ",
-			"#######",
-			"#######"
-		] // spaceship appereance
+		let spaceship = [
+				"   ¥   ",
+				"╔╦╦╬╦╦╗",
+				"╚╩╩╩╩╩╝"
+			] // spaceship appereance
 		let right = true; // sets invader move direction
 		let pause = false; // game pause
 		/*
@@ -79,7 +80,7 @@
 		}
 
 		function fireBullet() {
-			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 4,
+			currentBullets.push(new Bullet(spaceshipPos + 3, rows - 3,
 				bulletId++)); // creates instance of Bullet class & pushes it into array
 		}
 

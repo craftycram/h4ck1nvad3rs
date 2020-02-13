@@ -101,6 +101,12 @@
 				} else if (keyCode === 32) {
 					//Leertase - Feuer!
 					fireBullet();
+				} else if (keyCode === 49) {
+					speed = 25;
+				} else if (keyCode === 50) {
+					speed = 15;
+				} else if (keyCode === 51) {
+					speed = 5;
 				} else if (keyCode === 69) {
 					// explode all invaders
 					for (let r = 0; r < invaderRows.length; r++) {
@@ -118,6 +124,10 @@
 			if (keyCode === 80) {
 				// switch game pause
 				pause = !pause;
+			}
+			if (keyCode === 82) {
+				// switch game pause
+				location.reload();
 			}
 		}, false);
 

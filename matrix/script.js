@@ -4,7 +4,7 @@ $(document).ready(function () {
 		window.open("../index.html","_self");
 	});	
 	$('body').keydown(function(e) {
-		if((e.which == 27) || (e.which == 13)) {	//Enter Esc
+		if((e.which == 27) || (e.which == 13 || (e.which == 82))) {	//Enter Esc
 			window.open("../index.html","_self");
 		}		
 	});

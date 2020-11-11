@@ -12,6 +12,19 @@ pre {
   border: 1px solid gray;
 }
 
+.controls-info {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);  
+  text-align: center;
+}
+.control-key {
+  color: black;
+  background-color: white;
+}
+
 .scoreboard {
   background-color: black;
   color: white;

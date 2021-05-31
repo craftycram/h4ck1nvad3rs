@@ -3,6 +3,19 @@
 <html lang="en">
 
 <head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-71941062-3"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-71941062-3');
+	</script>
+
 	<meta charset="utf-8">
 	<title>HACKINVADERS</title>
 	<link rel="stylesheet" href="style.css">
@@ -20,6 +33,8 @@
 		<button class="button" onclick="speed = 15">Normal</button> <!-- creates pause button -->
 		<br>
 		<button class="button" onclick="speed = 5">Hard</button> <!-- creates pause button -->
+		<br>
+		<button class="button" onclick="speed = 1; spaceshipOffsetSteps = 4;">EXTREME</button> <!-- creates pause button -->
 	</div>
 	<p class="scoreboard" id="scoreboard">SCOREBOARD<br>ERROR LOADING</p> <!-- adds scoreboard -->
 	<pre id="console">
@@ -49,11 +64,12 @@
 		let endOfGame = 0; // var to save game state / to handle end of game actions
 		let speed = 15; // interval of runs to move invaders
 		let invaderShotCount = 0; // 
+		let spaceshipOffsetSteps = 1;
 		let spaceship = [
-				"   ¥   ",
-				"╔╦╦╬╦╦╗",
-				"╚╩╩╩╩╩╝"
-			] // spaceship appereance
+			"   ¥   ",
+			"╔╦╦╬╦╦╗",
+			"╚╩╩╩╩╩╝"
+		] // spaceship appereance
 		let right = true; // sets invader move direction
 		let pause = false; // game pause
 		/*
@@ -94,10 +110,10 @@
 			if (endOfGame < 1) {
 				if (keyCode === 37) {
 					//Linke Pfeiltaste - Spaceship nach links bewegen
-					spaceshipPos = Math.max(0, spaceshipPos - 1);
+					spaceshipPos = Math.max(0, spaceshipPos - spaceshipOffsetSteps);
 				} else if (keyCode === 39) {
 					//Rechte Pfeiltaste - Spaceship nach rechts bewegen
-					spaceshipPos = Math.min(cols - 7, spaceshipPos + 1);
+					spaceshipPos = Math.min(cols - 7, spaceshipPos + spaceshipOffsetSteps);
 				} else if (keyCode === 32) {
 					//Leertase - Feuer!
 					fireBullet();
@@ -107,6 +123,9 @@
 					speed = 15;
 				} else if (keyCode === 51) {
 					speed = 5;
+				} else if (keyCode === 52) {
+					speed = 1;
+					spaceshipOffsetSteps = 4;
 				} else if (keyCode === 69) {
 					// explode all invaders
 					for (let r = 0; r < invaderRows.length; r++) {
@@ -209,7 +228,8 @@
 			//Kugeln einen Schritt weiter bewegen, dann rendern
 			currentBullets.forEach((bullet) => {
 				bullet.posY -= 1; // move bullet
-				renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(bullet.posX, bullet.posY, cols), "|"); // print bullet
+				renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(bullet.posX, bullet.posY, cols),
+				"|"); // print bullet
 			})
 		}
 		let fun = false
@@ -243,7 +263,8 @@
 							*/
 						}
 
-						renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(spaceshipPos + 3, rows - 2, cols), "X") // add hit marker in spaceship when lasers on screen
+						renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(spaceshipPos + 3, rows - 2, cols),
+							"X") // add hit marker in spaceship when lasers on screen
 
 						//Kugeln entfernen die am oberen Rand angekommen sind ohne Treffer
 						invaderRows[r].invaders[i].lasers = invaderRows[r].invaders[i].lasers.filter(laser => laser.posY + yoffset <
@@ -472,7 +493,8 @@
 								invader
 								.posX +
 								xoffset, y + invader.posY + yoffset, cols), "█") // prints invader character (2nd half)
-						} else if (invader.appearance[x][y] == 2) { // checks if there is an explosion pixel in the invader's appearance
+						} else if (invader.appearance[x][y] ==
+							2) { // checks if there is an explosion pixel in the invader's appearance
 							renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invader.posX + xoffset, y + invader.posY +
 								yoffset, cols), "*"); // prints invader explosion character (1st half)
 							renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invader.appearance.length * 2 - x - 1 +
@@ -487,10 +509,13 @@
 
 		function printInvaderRow(invaderRow) {
 			for (let i = 0; i < invaderRow.invaders.length; i++) {
-				for (let x = 0; x < invaderRow.invaders[i].appearance.length; x++) { // cycles through x coordinates of invader's appearance
-					for (let y = 0; y < invaderRow.invaders[i].appearance[0].length; y++) { // cycles through y coordinates of invader's appearance
+				for (let x = 0; x < invaderRow.invaders[i].appearance
+					.length; x++) { // cycles through x coordinates of invader's appearance
+					for (let y = 0; y < invaderRow.invaders[i].appearance[0]
+						.length; y++) { // cycles through y coordinates of invader's appearance
 						if (invaderRow.invaders[i].explodeState < 5) { // checks invader's explode state smaller than 5
-							if (invaderRow.invaders[i].appearance[x][y] == 1) { // checks if there is a visible pixel in the invader's appearance
+							if (invaderRow.invaders[i].appearance[x][y] ==
+								1) { // checks if there is a visible pixel in the invader's appearance
 								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invaderRow.invaders[i].posX + xoffset,
 									y + invaderRow.invaders[i]
 									.posY +
@@ -500,16 +525,18 @@
 									invaderRow.invaders[i]
 									.posX +
 									xoffset, y + invaderRow.invaders[i].posY + yoffset, cols), "█") // prints invader character (2nd half)
-							} else if (invaderRow.invaders[i].appearance[x][y] == 2) { // checks if there is an explosion pixel in the invader's appearance
+							} else if (invaderRow.invaders[i].appearance[x][y] ==
+								2) { // checks if there is an explosion pixel in the invader's appearance
 								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(x + invaderRow.invaders[i].posX + xoffset,
 									y + invaderRow.invaders[i]
 									.posY +
 									yoffset, cols), "*"); // prints invader explosion character (1st half)
 								renderStr = Helper.setCharsAt(renderStr, Helper.xyToStringPos(invaderRow.invaders[i].appearance.length *
-									2 - x - 1 +
-									invaderRow.invaders[i]
-									.posX +
-									xoffset, y + invaderRow.invaders[i].posY + yoffset, cols), "*") // prints invader explosion character (2nd half)
+										2 - x - 1 +
+										invaderRow.invaders[i]
+										.posX +
+										xoffset, y + invaderRow.invaders[i].posY + yoffset, cols),
+									"*") // prints invader explosion character (2nd half)
 							}
 						}
 					}

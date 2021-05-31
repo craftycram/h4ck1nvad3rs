@@ -27,7 +27,7 @@ pre {
 .controls-box {
   position: absolute;
   float: left;
-  top: 40vh;
+  top: 30vh;
   left: 50px;
 }
 
@@ -39,7 +39,7 @@ pre {
   border: 2px solid white;
   text-align: center;
   box-shadow: 0 5px #999;
-  width: 7ch;
+  width: 9ch;
   margin: 5px;
 }
 .button:hover {
